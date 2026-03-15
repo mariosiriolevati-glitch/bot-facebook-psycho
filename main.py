@@ -50,15 +50,28 @@ def webhook():
                 # Gestione commenti su Post e Reel
                 if change["field"] == "feed" and change.get("value", {}).get("item") == "comment":
                     val = change["value"]
+                    # Rispondi solo ai nuovi commenti
                     if val.get("verb") == "add":
-                        comment_id = val["comment_id"]
+                        comment_id = val.get("comment_id")
                         comment_text = val.get("message", "")
                         # Evita che il bot risponda a se stesso
                         if val.get("from", {}).get("id") != entry["id"]:
                             risposta = logica_psicologica(comment_text)
-                            # CORREZIONE: Aggiunto lo slash fondamentale dopo facebook.com
+                            
+                            # URL CORRETTO con slash e versione API
                             url = f"https://graph.facebook.com{comment_id}/comments"
-                            requests.post(url, data={'message': risposta, 'access_token': PAGE_ACCESS_TOKEN})
+                            
+                            payload = {
+                                'message': risposta,
+                                'access_token': PAGE_ACCESS_TOKEN
+                            }
+                            
+                            # Invio della risposta e log dell'esito
+                            r = requests.post(url, data=payload)
+                            print(f"DEBUG - Commento ricevuto: {comment_text}")
+                            print(f"DEBUG - Risposta inviata: {risposta}")
+                            print(f"DEBUG - Esito Facebook: {r.status_code} - {r.text}")
+                            
     return "OK", 200
 
 if __name__ == "__main__":
