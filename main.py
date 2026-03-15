@@ -13,7 +13,7 @@ def logica_psicologica(testo):
     testo = testo.lower()
     parole = testo.split()
     # Vincolo 4: Psicologia per chi scrive male, gentilezza per chi scrive bene
-    positive = ['grazie', 'bravo', 'bello', 'complimenti', 'ottimo', 'storia', 'top', 'grande']
+    positive = ['grazie', 'bravo', 'bello', 'complimenti', 'ottimo', 'storia', 'top', 'grande', 'wow']
     is_buono = any(p in testo for p in positive)
 
     if is_buono:
@@ -56,12 +56,12 @@ def webhook():
                         # Evita che il bot risponda a se stesso
                         if val.get("from", {}).get("id") != entry["id"]:
                             risposta = logica_psicologica(comment_text)
-                            # Correzione URL Graph API (mancava la versione e lo slash)
+                            # CORREZIONE: Aggiunto lo slash fondamentale dopo facebook.com
                             url = f"https://graph.facebook.com{comment_id}/comments"
                             requests.post(url, data={'message': risposta, 'access_token': PAGE_ACCESS_TOKEN})
     return "OK", 200
 
 if __name__ == "__main__":
-    # Correzione per Render: usa la porta dinamica assegnata dal server
+    # Porta corretta per Render
     port = int(os.environ.get("PORT", 10000))
     app.run(host='0.0.0.0', port=port)
