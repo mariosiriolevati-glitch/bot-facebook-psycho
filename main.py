@@ -59,7 +59,7 @@ def webhook():
                             risposta = logica_psicologica(comment_text)
                             
                             # URL CORRETTO con slash e versione API
-                            url = f"https://graph.facebook.com{comment_id}/comments"
+                            url = f"https://graph.facebook.com/{comment_id}/comments"
                             
                             payload = {
                                 'message': risposta,
