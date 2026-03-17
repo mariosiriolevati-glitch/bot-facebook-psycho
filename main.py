@@ -31,7 +31,7 @@ def webhook():
         return "EVENT_RECEIVED", 200
 
 def send_reply(comment_id, text):
-    url = f"https://graph.facebook.com{comment_id}/comments"
+    url = f"https://graph.facebook.com/{comment_id}/comments"
     payload = {'message': text, 'access_token': PAGE_ACCESS_TOKEN}
     requests.post(url, data=payload)
 
